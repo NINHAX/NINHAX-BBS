@@ -1,0 +1,8 @@
+﻿CREATE TABLE [BBS].[Thread]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [Title] VARCHAR(64) NOT NULL, 
+    [Timestamp] TIMESTAMP NOT NULL, 
+    [Creator] UNIQUEIDENTIFIER NOT NULL, 
+    CONSTRAINT [ThreadCreator] FOREIGN KEY ([Creator]) REFERENCES [BBS].[User]([Id]) 
+)

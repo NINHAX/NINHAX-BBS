@@ -1,0 +1,10 @@
+﻿CREATE TABLE [BBS].[Post]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [Title] VARCHAR(64) NOT NULL, 
+    [Timestamp] TIMESTAMP NOT NULL, 
+    [Thread] UNIQUEIDENTIFIER NOT NULL, 
+    [Creator] UNIQUEIDENTIFIER NOT NULL, 
+    CONSTRAINT [PostCreator] FOREIGN KEY ([Creator]) REFERENCES [BBS].[User]([Id]),
+    CONSTRAINT [ParentThread] FOREIGN KEY ([Thread]) REFERENCES [BBS].[Thread]([Id])
+)

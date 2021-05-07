@@ -1,0 +1,7 @@
+﻿CREATE TABLE [BBS].[User]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+    [Email] VARCHAR(256) NOT NULL, 
+    [Password] VARCHAR(MAX) NOT NULL, 
+    [DisplayName] VARCHAR(16) NOT NULL 
+)
