@@ -7,8 +7,6 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "BBS Database", "BBS Databas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBS Terminal Services", "BBS Terminal Services\BBS Terminal Services.csproj", "{A9595F50-D23B-44D1-8E48-23122869208F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telnet Server", "Telnet Server\Telnet Server.csproj", "{29ED26D1-725B-4A2F-B5C9-CB961377C65A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,10 +23,6 @@ Global
 		{A9595F50-D23B-44D1-8E48-23122869208F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9595F50-D23B-44D1-8E48-23122869208F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9595F50-D23B-44D1-8E48-23122869208F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{29ED26D1-725B-4A2F-B5C9-CB961377C65A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{29ED26D1-725B-4A2F-B5C9-CB961377C65A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{29ED26D1-725B-4A2F-B5C9-CB961377C65A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{29ED26D1-725B-4A2F-B5C9-CB961377C65A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
