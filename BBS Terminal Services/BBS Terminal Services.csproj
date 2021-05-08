@@ -10,4 +10,14 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="5.0.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Screen\Assets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Screen\Assets\Welcome.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

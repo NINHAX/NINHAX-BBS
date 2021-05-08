@@ -1,0 +1,5 @@
+Welcome to NINHAX BBS Server 1.0
+
+You are here because you are conected by Telnet
+
+These are your details:

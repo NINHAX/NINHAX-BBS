@@ -23,6 +23,7 @@ namespace NHX.BBS.TS.Services
         }
         public Guid nvtId { get; private set; }
         public IPEndPoint remoteEndPoint { get; private set; }
+        public Screen.Screen screen { get; set; }
         private DateTime connectedAt { get; set; }
         public DateTime lastActionAt { get; set; }
         public int screenW { get; set; }

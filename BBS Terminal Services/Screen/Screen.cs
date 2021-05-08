@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace NHX.BBS.TS.Screen
 {
-    class Screen
+    public class Screen
     {
         protected NVT nvt;
         protected TelnetServer server;
-        protected Pointer pointer;
+        public Pointer pointer;
         public Screen parentScreen { get; set; }
         public Screen(NVT nvt, TelnetServer server) : this(nvt, server, null) { }
         public Screen(NVT nvt, TelnetServer server, Screen parent)
@@ -118,9 +118,9 @@ namespace NHX.BBS.TS.Screen
         protected virtual void F3() { }
         protected virtual void F4() { }
         protected void Write(string message) => server.SendMessageToNVT(nvt, message);
-        protected void Writeln(string s) => Write(server + "\r\n");
+        protected void Writeln(string message) => Write(message + "\r\n");
         protected void Writeln() => Write("\r\n");
-        protected void LnWrite(string s) => Write("\r\n" + s);
+        protected void LnWrite(string message) => Write("\r\n" + message);
         protected void MoveTo(int row, int col) => Write(pointer.Move(col, row));
         protected void ClearLine(int row) => Write(pointer.Move(1, row) + pointer.ClearLine);
     }

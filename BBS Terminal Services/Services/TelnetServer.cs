@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NHX.BBS.TS.Services
 {
-    class TelnetServer
+    public class TelnetServer
     {
         private IPAddress ip;
         private ushort port;
@@ -80,11 +80,15 @@ namespace NHX.BBS.TS.Services
                 SendDataToSocket(socket, TelnetIACHandler.Do(TelnetIACHandler.Option.NegotiateAboutWindowSize));
 
                 Connected(nvt);
-                esocket.BeginAccept(new AsyncCallback(HandleConnection), esocket);
+                //esocket.BeginAccept(new AsyncCallback(HandleConnection), esocket);
             }
             catch
             {
-                ErrorConnection(esocket.RemoteEndPoint);
+                try
+                {
+                    ErrorConnection(esocket.RemoteEndPoint);
+                }
+                catch { }
             }
         }
 
@@ -201,10 +205,6 @@ namespace NHX.BBS.TS.Services
         }
 
         private bool ClientTimeout(NVT nvt) => (DateTime.Now - nvt.lastActionAt).TotalSeconds > 500;
-
-        /// <summary>
-        /// Scans all clients and kills inactive ones
-        /// </summary>
         public void PurgeSockets()
         {
             foreach (KeyValuePair<Socket, NVT> nvt in NVTs)

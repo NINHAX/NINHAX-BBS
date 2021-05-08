@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
+using NHX.BBS.TS.Screen;
 
 namespace NHX.BBS.TS
 {
@@ -55,6 +56,8 @@ namespace NHX.BBS.TS
         private void TelnetConnected(NVT nvt)
         {
             _logger.LogInformation("Telnet connection established at: {time} ID: {1} IP: {2}", DateTimeOffset.Now, nvt.nvtId, nvt.remoteEndPoint);
+            nvt.screen = new Welcome(nvt, TelnetServer);
+            nvt.screen.Show();
         }
 
         private void TelnetDisconnected(EndPoint remote)

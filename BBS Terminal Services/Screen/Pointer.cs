@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NHX.BBS.TS.Screen
 {
-    class Pointer
+    public class Pointer
     {
         public string ClearScreen() => "\u001b[2J" + Start();
         public string Move(int col, int row) => string.Format("\u001b[{0};{1}f", row, col);
