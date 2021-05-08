@@ -51,13 +51,15 @@ namespace NHX.BBS.TS.Services
 
         public void Stop() => socket.Close();
 
-        private NVT getNVTBySocket(Socket socket)
+        private NVT GetNVTBySocket(Socket socket)
         {
             NVT result;
             if (!NVTs.TryGetValue(socket, out result))
                 result = null;
             return result;
         }
+
+        public Socket GetSocketByNVT(NVT nvt) => NVTs.FirstOrDefault(nvto => nvto.Value.nvtId == nvt.nvtId).Key;
 
         private void HandleConnection(IAsyncResult asyncResult)
         {
@@ -107,6 +109,12 @@ namespace NHX.BBS.TS.Services
             }
         }
 
+        public void SendMessageToNVT(NVT nvt, string message)
+        {
+            Socket socket = GetSocketByNVT(nvt);
+            SendStringToSocket(socket, message);
+        }
+
         private void SendDataToSocket(Socket socket, byte[] data) =>
            socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendData), socket);
 
@@ -121,7 +129,7 @@ namespace NHX.BBS.TS.Services
             Socket socket = (Socket)result.AsyncState;
             try
             {
-                NVT nvt = getNVTBySocket(socket);
+                NVT nvt = GetNVTBySocket(socket);
                 int bytesReceived = socket.EndReceive(result);
                 if (bytesReceived == 0)
                 {
