@@ -78,6 +78,7 @@ namespace NHX.BBS.TS.Services
                 SendDataToSocket(socket, TelnetIACHandler.Do(TelnetIACHandler.Option.NegotiateAboutWindowSize));
 
                 Connected(nvt);
+                esocket.BeginAccept(new AsyncCallback(HandleConnection), esocket);
             }
             catch
             {
@@ -88,8 +89,8 @@ namespace NHX.BBS.TS.Services
         private void CloseSocket(Socket socket)
         {
             Disconnected(socket.RemoteEndPoint);
-            socket.Close();
             NVTs.Remove(socket);
+            socket.Close();
         }
 
         private void SendData(IAsyncResult result)
@@ -125,6 +126,8 @@ namespace NHX.BBS.TS.Services
                 if (bytesReceived == 0)
                 {
                     CloseSocket(socket);
+                    Disconnected(socket.RemoteEndPoint);
+                    socket.BeginAccept(new AsyncCallback(HandleConnection), socket);
                 }
                 else if (data[0] == (byte)TelnetIACHandler.Command.IAC)
                 {
@@ -181,7 +184,27 @@ namespace NHX.BBS.TS.Services
             }
             catch
             {
-                ErrorRecive(socket.RemoteEndPoint);
+                try
+                {
+                    ErrorRecive(socket.RemoteEndPoint);
+                }
+                catch { }
+            }
+        }
+
+        private bool ClientTimeout(NVT nvt) => (DateTime.Now - nvt.lastActionAt).TotalSeconds > 500;
+
+        /// <summary>
+        /// Scans all clients and kills inactive ones
+        /// </summary>
+        public void PurgeSockets()
+        {
+            foreach (KeyValuePair<Socket, NVT> nvt in NVTs)
+            {
+                if (ClientTimeout(nvt.Value))
+                {
+                    CloseSocket(nvt.Key);
+                }
             }
         }
     }

@@ -33,7 +33,8 @@ namespace NHX.BBS.TS
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                await Task.Delay(1000, stoppingToken);
+                TelnetServer.PurgeSockets();
+                await Task.Delay(500, stoppingToken);
             }
         }
 
