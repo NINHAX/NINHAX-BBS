@@ -105,8 +105,8 @@ namespace NHX.BBS.TS.Services
             {
                 int w = data[offset + 3] * 256 + data[offset + 4];
                 int h = data[offset + 5] * 256 + data[offset + 6];
-                if (w != 0) nvt.screenW = w;
-                if (h != 0) nvt.screenH = h;
+                if (w != 0) nvt.ScreenW = w;
+                if (h != 0) nvt.ScreenH = h;
             }
         }
 

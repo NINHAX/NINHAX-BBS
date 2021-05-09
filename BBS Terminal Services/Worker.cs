@@ -55,9 +55,9 @@ namespace NHX.BBS.TS
 
         private void TelnetConnected(NVT nvt)
         {
-            _logger.LogInformation("Telnet connection established at: {time} ID: {1} IP: {2}", DateTimeOffset.Now, nvt.nvtId, nvt.remoteEndPoint);
-            nvt.screen = new Welcome(nvt, TelnetServer);
-            nvt.screen.Show();
+            _logger.LogInformation("Telnet connection established at: {time} ID: {1} IP: {2}", DateTimeOffset.Now, nvt.NVTId, nvt.RemoteEndPoint);
+            nvt.Screen = new Welcome(nvt, TelnetServer);
+            nvt.Screen.Show();
         }
 
         private void TelnetDisconnected(EndPoint remote)
@@ -66,23 +66,23 @@ namespace NHX.BBS.TS
         }
         private void TelnetErrorConnection(EndPoint remote)
         {
-            _logger.LogInformation("Telnet connection error at: {time} IP: {1}", DateTimeOffset.Now, remote.ToString());
+            _logger.LogError("Telnet connection error at: {time} IP: {1}", DateTimeOffset.Now, remote.ToString());
         }
         private void TelnetErrorRecive(EndPoint remote)
         {
-            _logger.LogInformation("Telnet error when recived data at: {time} IP: {1}", DateTimeOffset.Now, remote.ToString());
+            _logger.LogError("Telnet error when recived data at: {time} IP: {1}", DateTimeOffset.Now, remote.ToString());
         }
         private void TelnetErrorSend(EndPoint remote)
         {
-            _logger.LogInformation("Telnet error when send data at: {time} IP: {1}", DateTimeOffset.Now, remote.ToString());
+            _logger.LogError("Telnet error when send data at: {time} IP: {1}", DateTimeOffset.Now, remote.ToString());
         }
         private void InputControlChar(NVT nvt, byte[] data, int bytesRecived)
         {
-            nvt.screen.HandleChar(data, bytesRecived);
+            nvt.Screen.HandleChar(data, bytesRecived);
         }
         private void MessageRecived(NVT nvt, string data)
         {
-            nvt.screen.HandleMessage(data);
+            nvt.Screen.HandleMessage(data);
         }
     }
 }

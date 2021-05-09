@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NHX.BBS.TS.Screen
 {
-    public class Welcome : Screen
+    public class Menu : Screen
     {
         enum States
         {
@@ -17,7 +17,7 @@ namespace NHX.BBS.TS.Screen
         States status;
 
         string text;
-        public Welcome(NVT nvt, TelnetServer server) : base(nvt, server, null)
+        public Menu(NVT nvt, TelnetServer server) : base(nvt, server, null)
         {
             text = File.Read("Welcome");
         }
@@ -46,8 +46,8 @@ namespace NHX.BBS.TS.Screen
 
         public override void ShowNext()
         {
-            nvt.Screen = new Login(nvt, server);
-            nvt.Screen.Show();
+            //nvt.Screen = new Login(nvt, server);
+            //nvt.Screen.Show();
         }
     }
 }

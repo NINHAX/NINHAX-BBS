@@ -1,10 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>dotnet-BBS_Terminal_Services-5068523A-C739-44E2-B762-D36C522D1523</UserSecretsId>
     <RootNamespace>NHX.BBS.TS</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Screen\Template.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
@@ -16,7 +20,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Screen\Assets\Welcome.txt">
+    <None Include="Screen\Template.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BBS Logic\BBS Logic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Screen\Assets\*.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

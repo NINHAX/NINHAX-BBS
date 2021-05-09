@@ -11,8 +11,14 @@ namespace NHX.BBS.TS.Screen
         public static string Read(string name)
         {
             string path = @"./Screen/Assets/" + name+".txt";
-            string text = System.IO.File.ReadAllText(path);
-            return text;
+            try
+            {
+                return System.IO.File.ReadAllText(path);
+            }
+            catch
+            {
+                return "Failed to read text op " + name;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NHX.BBS.Logic.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -12,8 +13,7 @@ namespace NHX.BBS.TS.Services
         public enum Status
         {
             Guest = 0,
-            Authenticating = 1,
-            LoggedIn = 2
+            LoggedIn = 1
         }
         public enum Mode
         {
@@ -21,46 +21,45 @@ namespace NHX.BBS.TS.Services
             CharMode,
             PasswordMode
         }
-        public Guid nvtId { get; private set; }
-        public IPEndPoint remoteEndPoint { get; private set; }
-        public Screen.Screen screen { get; set; }
-        private DateTime connectedAt { get; set; }
-        public DateTime lastActionAt { get; set; }
-        public int screenW { get; set; }
-        public int screenH { get; set; }
+        public Guid NVTId { get; private set; }
+        public IPEndPoint RemoteEndPoint { get; private set; }
+        public Screen.Screen Screen { get; set; }
+        public DateTime ConnectedAt { get; set; }
+        public DateTime LastActionAt { get; set; }
+        public int ScreenW { get; set; }
+        public int ScreenH { get; set; }
         public bool BinaryMode { get; set; }
-        public Status status { get; set; }
-        public Mode mode { get; set; }
-        private Guid user { get; set; }
-        public string inputData { get; set; }
+        public Status State { get; set; }
+        public Mode CurrentMode { get; set; }
+        public User User { get; set; }
+        public string InputData { get; set; }
 
         public NVT(Guid nvtId, IPEndPoint remoteEndPoint)
         {
-            this.nvtId = nvtId;
-            this.remoteEndPoint = remoteEndPoint;
-            connectedAt = DateTime.Now;
-            status = Status.Guest;
-            mode = Mode.LineMode;
-            user = Guid.Empty;
-            lastActionAt = DateTime.Now;
-            screenW = 80;
-            screenH = 24;
+            this.NVTId = nvtId;
+            this.RemoteEndPoint = remoteEndPoint;
+            ConnectedAt = DateTime.Now;
+            State = Status.Guest;
+            CurrentMode = Mode.LineMode;
+            LastActionAt = DateTime.Now;
+            ScreenW = 80;
+            ScreenH = 24;
             BinaryMode = false;
         }
 
         public void ResetInputData()
         {
-            this.inputData = string.Empty;
+            this.InputData = string.Empty;
         }
 
         public void AppendInputData(string data)
         {
-            this.inputData += data;
+            this.InputData += data;
         }
 
         public void RemoveLastChar()
         {
-            this.inputData = this.inputData.Substring(0, this.inputData.Length - 1);
+            this.InputData = this.InputData[0..^1];
         }
     }
 }

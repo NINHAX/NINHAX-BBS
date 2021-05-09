@@ -59,7 +59,7 @@ namespace NHX.BBS.TS.Services
             return result;
         }
 
-        public Socket GetSocketByNVT(NVT nvt) => NVTs.FirstOrDefault(nvto => nvto.Value.nvtId == nvt.nvtId).Key;
+        public Socket GetSocketByNVT(NVT nvt) => NVTs.FirstOrDefault(nvto => nvto.Value.NVTId == nvt.NVTId).Key;
 
         private void HandleConnection(IAsyncResult asyncResult)
         {
@@ -69,7 +69,7 @@ namespace NHX.BBS.TS.Services
                 socket = esocket.EndAccept(asyncResult);
 
                 Guid nvtId = Guid.NewGuid();
-                NVT nvt = new NVT(nvtId, (IPEndPoint)socket.RemoteEndPoint);
+                NVT nvt = new(nvtId, (IPEndPoint)socket.RemoteEndPoint);
                 NVTs.Add(socket, nvt);
 
                 SendDataToSocket(socket, TelnetIACHandler.Do(TelnetIACHandler.Option.Echo));
@@ -105,7 +105,7 @@ namespace NHX.BBS.TS.Services
             try
             {
                 socket.EndSend(result);
-                socket.BeginReceive(data, 0, dataSize, SocketFlags.None, new AsyncCallback(receiveData), socket);
+                socket.BeginReceive(data, 0, dataSize, SocketFlags.None, new AsyncCallback(ReceiveData), socket);
             }
             catch
             {
@@ -128,7 +128,7 @@ namespace NHX.BBS.TS.Services
             SendDataToSocket(socket, data);
         }
 
-        private void receiveData(IAsyncResult result)
+        private void ReceiveData(IAsyncResult result)
         {
             Socket socket = (Socket)result.AsyncState;
             try
@@ -153,15 +153,15 @@ namespace NHX.BBS.TS.Services
                             if (data[offset] == (byte)TelnetIACHandler.Command.IAC) break;
                         }
                     }
-                    socket.BeginReceive(data, 0, dataSize, SocketFlags.None, new AsyncCallback(receiveData), socket);
+                    socket.BeginReceive(data, 0, dataSize, SocketFlags.None, new AsyncCallback(ReceiveData), socket);
                 }
                 else if (data[0] < 0xF0)
                 {
-                    string inputData = nvt.inputData;
-                    nvt.lastActionAt = DateTime.Now;
-                    if ((data[0] == 0x2E && data[1] == 0x0D && nvt.inputData.Length == 0) || (data[0] == 0x0D && data[1] == 0x0A) || data[0] == 0x0D || data[0] == 0x0A)
+                    string inputData = nvt.InputData;
+                    nvt.LastActionAt = DateTime.Now;
+                    if ((data[0] == 0x2E && data[1] == 0x0D && nvt.InputData.Length == 0) || (data[0] == 0x0D && data[1] == 0x0A) || data[0] == 0x0D || data[0] == 0x0A)
                     {
-                        MessageRecived(nvt, nvt.inputData);
+                        MessageRecived(nvt, nvt.InputData);
                         nvt.ResetInputData();
                     }
                     else
@@ -174,25 +174,25 @@ namespace NHX.BBS.TS.Services
                                 SendDataToSocket(socket, new byte[] { 0x08, 0x20, 0x08 });
                             }
                             else
-                                socket.BeginReceive(data, 0, dataSize, SocketFlags.None, new AsyncCallback(receiveData), socket);
+                                socket.BeginReceive(data, 0, dataSize, SocketFlags.None, new AsyncCallback(ReceiveData), socket);
                         }
                         else if (data[0] == 0x7F)
-                            socket.BeginReceive(data, 0, dataSize, SocketFlags.None, new AsyncCallback(receiveData), socket);
+                            socket.BeginReceive(data, 0, dataSize, SocketFlags.None, new AsyncCallback(ReceiveData), socket);
                         else if (data[0] < 0x20)
                             ControlChar(nvt, data, bytesReceived);
                         else
                         {
                             nvt.AppendInputData(Encoding.ASCII.GetString(data, 0, bytesReceived));
-                            if (nvt.mode != NVT.Mode.PasswordMode)
+                            if (nvt.CurrentMode != NVT.Mode.PasswordMode)
                                 SendDataToSocket(socket, new byte[] { data[0] });
                             else
                                 SendStringToSocket(socket, "*");
-                            socket.BeginReceive(data, 0, dataSize, SocketFlags.None, new AsyncCallback(receiveData), socket);
+                            socket.BeginReceive(data, 0, dataSize, SocketFlags.None, new AsyncCallback(ReceiveData), socket);
                         }
                     }
                 }
                 else
-                    socket.BeginReceive(data, 0, dataSize, SocketFlags.None, new AsyncCallback(receiveData), socket);
+                    socket.BeginReceive(data, 0, dataSize, SocketFlags.None, new AsyncCallback(ReceiveData), socket);
             }
             catch
             {
@@ -204,7 +204,7 @@ namespace NHX.BBS.TS.Services
             }
         }
 
-        private bool ClientTimeout(NVT nvt) => (DateTime.Now - nvt.lastActionAt).TotalSeconds > 500;
+        private bool ClientTimeout(NVT nvt) => (DateTime.Now - nvt.LastActionAt).TotalSeconds > 500;
         public void PurgeSockets()
         {
             foreach (KeyValuePair<Socket, NVT> nvt in NVTs)
