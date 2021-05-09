@@ -78,11 +78,11 @@ namespace NHX.BBS.TS
         }
         private void InputControlChar(NVT nvt, byte[] data, int bytesRecived)
         {
-            //To the app controller?
+            nvt.screen.HandleChar(data, bytesRecived);
         }
         private void MessageRecived(NVT nvt, string data)
         {
-            //To the app
+            nvt.screen.HandleMessage(data);
         }
     }
 }

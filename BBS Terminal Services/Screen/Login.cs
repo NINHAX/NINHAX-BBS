@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NHX.BBS.TS.Screen
 {
-    public class Welcome : Screen
+    public class Login : Screen
     {
         enum States
         {
@@ -15,22 +15,13 @@ namespace NHX.BBS.TS.Screen
         }
 
         States status;
-
-        string text;
-        public Welcome(NVT nvt, TelnetServer server) : base(nvt, server, null)
+        public Login(NVT nvt, TelnetServer server) : base(nvt, server, null)
         {
-            text = File.Read("Welcome");
         }
 
         public override void Show()
         {
             Write(pointer.ClearScreen());
-            Write(text);
-            LnWrite("IP AND PORT: " + server.GetSocketByNVT(nvt).RemoteEndPoint);
-            LnWrite("Client ID: " + nvt.nvtId);
-            LnWrite("Screen: " + nvt.screenW + " x " + nvt.screenH);
-            status = States.WatingConfirmation;
-            LnWrite("press enter...");
         }
 
         public override void HandleMessage(string message)
@@ -38,16 +29,14 @@ namespace NHX.BBS.TS.Screen
             switch (status)
             {
                 case States.WatingConfirmation:
-                    LnWrite("Ok...");
-                    ShowNext();
                     break;
             }
         }
 
         public override void ShowNext()
         {
-            nvt.screen = new Login(nvt, server);
-            nvt.screen.Show();
+            //nvt.screen = new Login(nvt, server);
+            //nvt.screen.Show();
         }
     }
 }

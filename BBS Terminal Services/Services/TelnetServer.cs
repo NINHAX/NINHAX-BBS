@@ -80,7 +80,7 @@ namespace NHX.BBS.TS.Services
                 SendDataToSocket(socket, TelnetIACHandler.Do(TelnetIACHandler.Option.NegotiateAboutWindowSize));
 
                 Connected(nvt);
-                //esocket.BeginAccept(new AsyncCallback(HandleConnection), esocket);
+                esocket.BeginAccept(new AsyncCallback(HandleConnection), esocket);
             }
             catch
             {

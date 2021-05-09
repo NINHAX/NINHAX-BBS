@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "BBS Database", "BBS Database\BBS Database.sqlproj", "{EB4F4F0A-9E3E-4D5D-95B2-ECD9C226D6AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBS Terminal Services", "BBS Terminal Services\BBS Terminal Services.csproj", "{A9595F50-D23B-44D1-8E48-23122869208F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BBS Terminal Services", "BBS Terminal Services\BBS Terminal Services.csproj", "{A9595F50-D23B-44D1-8E48-23122869208F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBS Logic", "BBS Logic\BBS Logic.csproj", "{07BE19D6-D0E7-431D-97BD-712DE8AB7EFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{A9595F50-D23B-44D1-8E48-23122869208F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9595F50-D23B-44D1-8E48-23122869208F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9595F50-D23B-44D1-8E48-23122869208F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07BE19D6-D0E7-431D-97BD-712DE8AB7EFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07BE19D6-D0E7-431D-97BD-712DE8AB7EFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07BE19D6-D0E7-431D-97BD-712DE8AB7EFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07BE19D6-D0E7-431D-97BD-712DE8AB7EFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
