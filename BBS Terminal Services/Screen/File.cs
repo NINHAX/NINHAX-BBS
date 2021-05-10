@@ -20,5 +20,20 @@ namespace NHX.BBS.TS.Screen
                 return "Failed to read text op " + name;
             }
         }
+
+        public static string New(string name, string message)
+        {
+            string path = @"./Screen/Assets/" + name + ".txt";
+            try
+            {
+                System.IO.File.Create(path);
+                System.IO.File.WriteAllBytes(path, Encoding.ASCII.GetBytes(message));
+                return "File created";
+            }
+            catch
+            {
+                return "Failed to create new file";
+            }
+        }
     }
 }

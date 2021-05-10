@@ -11,7 +11,7 @@ namespace NHX.BBS.TS.Screen
     {
         enum States
         {
-            WatingConfirmation = 0,
+            WatingCommand = 0,
         }
 
         States status;
@@ -19,35 +19,93 @@ namespace NHX.BBS.TS.Screen
         string text;
         public Menu(NVT nvt, TelnetServer server) : base(nvt, server, null)
         {
-            text = File.Read("Welcome");
+            text = File.Read("Menu");
         }
 
         public override void Show()
         {
             Write(pointer.ClearScreen());
             Write(text);
-            LnWrite("IP AND PORT: " + server.GetSocketByNVT(nvt).RemoteEndPoint);
-            LnWrite("Client ID: " + nvt.NVTId);
-            LnWrite("Screen: " + nvt.ScreenW + " x " + nvt.ScreenH);
-            status = States.WatingConfirmation;
-            LnWrite("press enter...");
+            LnWrite("Thread: ");
+            LnWrite("\t NewThread");
+            LnWrite("\t ViewThreads");
+            LnWrite("User: ");
+            LnWrite("\t MyStats");
+            LnWrite("\t Exit");
+            status = States.WatingCommand;
+            if(nvt.State == NVT.Status.Guest)
+            {
+                LnWrite("Guest>");
+            }
+            else
+            {
+                LnWrite(nvt.User.Email + ">");
+            }
         }
 
         public override void HandleMessage(string message)
         {
-            switch (status)
+            switch (nvt.State)
             {
-                case States.WatingConfirmation:
-                    LnWrite("Ok...");
-                    ShowNext();
+                case NVT.Status.LoggedIn:
+                    switch (status)
+                    {
+                        case States.WatingCommand:
+                            switch (message.ToLower())
+                            {
+                                case "newthread":
+                                    nvt.Screen = new NewThread(nvt, server, this);
+                                    nvt.Screen.Show();
+                                    break;
+                                case "viewthreads":
+                                    nvt.Screen = new ViewThread(nvt, server, this);
+                                    nvt.Screen.Show();
+                                    break;
+                                case "mystats":
+                                    nvt.Screen = new MyStats(nvt, server, this);
+                                    nvt.Screen.Show();
+                                    break;
+                                case "exit":
+                                    server.CloseSocket(server.GetSocketByNVT(nvt));
+                                    break;
+                                default:
+                                    Show();
+                                    break;
+                            }
+                            break;
+                    }
+                    break;
+                default:
+                    switch (status)
+                    {
+                        case States.WatingCommand:
+                            switch (message.ToLower())
+                            {
+                                case "newthread":
+                                    LnWrite("You are a Guest...");
+                                    Task.Delay(500);
+                                    nvt.Screen.Show();
+                                    break;
+                                case "viewthreads":
+                                    nvt.Screen = new ViewThread(nvt, server, this);
+                                    nvt.Screen.Show();
+                                    break;
+                                case "mystats":
+                                    LnWrite("You are a Guest...");
+                                    Task.Delay(500);
+                                    nvt.Screen.Show();
+                                    break;
+                                case "exit":
+                                    server.CloseSocket(server.GetSocketByNVT(nvt));
+                                    break;
+                                default:
+                                    Show();
+                                    break;
+                            }
+                            break;
+                    }
                     break;
             }
-        }
-
-        public override void ShowNext()
-        {
-            //nvt.Screen = new Login(nvt, server);
-            //nvt.Screen.Show();
         }
     }
 }

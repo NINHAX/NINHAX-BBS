@@ -92,7 +92,7 @@ namespace NHX.BBS.TS.Services
             }
         }
 
-        private void CloseSocket(Socket socket)
+        public void CloseSocket(Socket socket)
         {
             Disconnected(socket.RemoteEndPoint);
             NVTs.Remove(socket);
