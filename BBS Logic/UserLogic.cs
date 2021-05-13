@@ -22,7 +22,7 @@ namespace NHX.BBS.Logic
         {
             using (var context = new BBSDatabaseContext())
             {
-                User user = new User
+                User user = new()
                 {
                     Id = Guid.NewGuid(),
                     Email = email,

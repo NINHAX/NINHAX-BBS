@@ -1,36 +1,26 @@
 ﻿using NHX.BBS.TS.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NHX.BBS.TS.Screen
 {
-    public class Welcome : Screen
+    internal class NewPost : Screen
     {
         enum States
         {
             WatingConfirmation = 0,
+            WatingFile = 1
         }
 
         States status;
-
-        string text;
-        public Welcome(NVT nvt, TelnetServer server) : base(nvt, server, null)
+        string title;
+        public NewPost(NVT nvt, TelnetServer server, Screen parent) : base(nvt, server, parent)
         {
-            text = File.Read("Welcome");
         }
 
         public override void Show()
         {
             Write(pointer.ClearScreen());
-            Write(text);
-            LnWrite("IP AND PORT: " + server.GetSocketByNVT(nvt).RemoteEndPoint);
-            LnWrite("Client ID: " + nvt.NVTId);
-            LnWrite("Screen: " + nvt.ScreenW + " x " + nvt.ScreenH);
+            LnWrite("Please insert the name of the text file and press enter");
             status = States.WatingConfirmation;
-            LnWrite("press enter...");
         }
 
         public override void HandleMessage(string message)
@@ -38,6 +28,10 @@ namespace NHX.BBS.TS.Screen
             switch (status)
             {
                 case States.WatingConfirmation:
+                    LnWrite("Insert the text...");
+                    ShowNext();
+                    break;
+                case States.WatingFile:
                     LnWrite("Ok...");
                     ShowNext();
                     break;
@@ -46,7 +40,7 @@ namespace NHX.BBS.TS.Screen
 
         public override void ShowNext()
         {
-            nvt.Screen = new Login(nvt, server);
+            nvt.Screen = parentScreen;
             nvt.Screen.Show();
         }
     }

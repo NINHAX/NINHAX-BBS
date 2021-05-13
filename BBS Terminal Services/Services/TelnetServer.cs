@@ -138,7 +138,6 @@ namespace NHX.BBS.TS.Services
                 if (bytesReceived == 0)
                 {
                     CloseSocket(socket);
-                    Disconnected(socket.RemoteEndPoint);
                     socket.BeginAccept(new AsyncCallback(HandleConnection), socket);
                 }
                 else if (data[0] == (byte)TelnetIACHandler.Command.IAC)

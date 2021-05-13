@@ -25,7 +25,7 @@ namespace NHX.BBS.Logic.Model
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=EARTH\\SQLEXPRESS;Initial Catalog='BBS Database';Integrated Security=True");
+                optionsBuilder.UseSqlServer(@"Data Source=(localdb)\ProjectsV13;Initial Catalog='BBS Database';Integrated Security=True");
             }
         }
 
